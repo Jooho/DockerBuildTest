@@ -6,6 +6,9 @@ RUN yum --disableplugin=subscription-manager --nodocs -y install httpd \
   && systemctl enable httpd
 #RUN yum -y install httpd; yum clean all; systemctl enable httpd;
 #RUN echo "Successful Web Server Test" > /var/www/html/index.html
+RUN chgrp -R 0 /some/directory && \
+    chmod -R g=u /some/directory
 RUN mkdir /etc/systemd/system/httpd.service.d/; echo -e '[Service]\nRestart=always' > /etc/systemd/system/httpd.service.d/httpd.conf
 EXPOSE 10280
-USER 1000
+
+#USER 1000
