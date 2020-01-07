@@ -9,5 +9,5 @@ RUN yum --disableplugin=subscription-manager --nodocs -y install httpd \
 
 #RUN chmod g=u /etc/passwd
 RUN mkdir /etc/systemd/system/httpd.service.d/; echo -e '[Service]\nRestart=always' > /etc/systemd/system/httpd.service.d/httpd.conf
-EXPOSE 10280
+EXPOSE 80
 #USER 1000
