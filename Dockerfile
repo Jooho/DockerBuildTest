@@ -1,3 +1,8 @@
+FROM openshift/origin-release:golang-1.13 AS builder
+WORKDIR /go/src/github.com/openshift-psap/special-resource-operator
+COPY . .
+RUN make build
+
 FROM registry.access.redhat.com/ubi8/ubi
 USER root
 LABEL maintainer="John Doe"
