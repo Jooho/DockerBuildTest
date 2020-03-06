@@ -1,13 +1,12 @@
-#FROM ubi-init:latest
-FROM registry.access.redhat.com/ubi8/ubi-init:latest
-RUN yum --disableplugin=subscription-manager --nodocs -y install httpd \
-  && yum --disableplugin=subscription-manager clean all \
-  && echo "Hello from the httpd-parent container!" > /var/www/html/index.html \
-  && systemctl enable httpd
-#RUN yum -y install httpd; yum clean all; systemctl enable httpd;
-#RUN echo "Successful Web Server Test" > /var/www/html/index.html
-
-#RUN chmod g=u /etc/passwd
-RUN mkdir /etc/systemd/system/httpd.service.d/; echo -e '[Service]\nRestart=always' > /etc/systemd/system/httpd.service.d/httpd.conf
+FROM registry.access.redhat.com/ubi8/ubi
+USER root
+LABEL maintainer="John Doe"
+# Update image
+RUN yum update --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos -y && rm -rf /var/cache/yum
+RUN yum install --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos httpd -y && rm -rf /var/cache/yum
+# Add default Web page and expose port
+RUN echo "The Web Server is Running" > /var/www/html/index.html
 EXPOSE 80
-#USER 1000
+# Start the service
+CMD ["-D", "FOREGROUND"]
+ENTRYPOINT ["/usr/sbin/httpd"]
