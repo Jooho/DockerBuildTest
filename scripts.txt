@@ -1,0 +1,41 @@
+oc new-project build-test
+
+oc new-app https://github.com/Jooho/DockerBuildTest.git
+
+echo "apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2020-01-07T17:42:42Z"
+  labels:
+    app: heuristicmerkle
+  name: heuristicmerkle
+spec:
+  containers:
+  - command:
+    - /sbin/init
+    env:
+    - name: PATH
+      value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    - name: TERM
+      value: xterm
+    - name: HOSTNAME
+    - name: container
+      value: oci
+    - name: OPENSHIFT_BUILD_SOURCE
+      value: https://github.com/Jooho/DockerBuildTest.git
+    - name: OPENSHIFT_BUILD_COMMIT
+      value: fb0e834ad18ea0ddc28efcdfa91cec4a8c0657ef
+    - name: OPENSHIFT_BUILD_NAME
+      value: dockerbuildtest-1
+    - name: OPENSHIFT_BUILD_NAMESPACE
+      value: build-test
+    image: image-registry.openshift-image-registry.svc:5000/build-test/dockerbuildtest:latest
+    name: heuristicmerkle
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities: {}
+      privileged: false
+      readOnlyRootFilesystem: false
+    workingDir: /
+status: {}" |oc create -f -
